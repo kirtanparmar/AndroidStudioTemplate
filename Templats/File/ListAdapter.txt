@@ -1,0 +1,28 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME}#end
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+
+#parse("File Header.java")
+class ${NAME}(diffUtil: DiffUtil.ItemCallback<${Model_Class}>,
+private val listener: ${List_Item_Click_Listener}) :
+    ListAdapter<${Model_Class}, ${NAME}.${ViewHolder_Class}>(diffUtil) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ${ViewHolder_Class} =
+        ${ViewHolder_Class}(${ListView_Binding_Class}.inflate(LayoutInflater.from(parent.context),parent,false))
+
+    override fun onBindViewHolder(holder: ${ViewHolder_Class}, position: Int) {
+        holder.setData(getItem(position), listener)
+    }
+
+    class ${ViewHolder_Class}(private val view: ${ListView_Binding_Class}): RecyclerView.ViewHolder(view.root) {
+        fun setData(model: ${Model_Class}, listener : ${List_Item_Click_Listener}) {
+            view.model = model
+        }
+    }
+
+}
