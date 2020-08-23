@@ -1,0 +1,50 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME}#end;
+
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
+
+#parse("File Header.java")
+public class ${NAME} extends ListAdapter<${Model_Class}, ${NAME}.${ViewHolder_Class}> {
+
+    private CallBack callBack;
+
+    public ${NAME}(@NonNull DiffUtil.ItemCallback<UserTable> diffCallback, CallBack callBack) {
+        super(diffCallback);
+        this.callBack = callBack;
+    }
+
+    @NonNull
+    @Override
+    public ${ViewHolder_Class} onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ${ViewHolder_Class}(${ListView_Binding_Class}.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ${ViewHolder_Class} holder, int position) {
+        holder.setData(getItem(position));
+    }
+
+    public class ${ViewHolder_Class} extends RecyclerView.ViewHolder {
+        ${ListView_Binding_Class} itemView;
+
+        public ${ViewHolder_Class}(@NonNull ${ListView_Binding_Class} itemView) {
+            super(itemView.getRoot());
+            this.itemView = itemView;
+        }
+
+        public void setData(${Model_Class} model) {
+            itemView.setModel(model);
+            itemView.getRoot().setOnClickListener(view -> callBack.itemClicked(model));
+        }
+    }
+
+    interface CallBack {
+        void itemClicked(${Model_Class} model);
+    }
+
+}
